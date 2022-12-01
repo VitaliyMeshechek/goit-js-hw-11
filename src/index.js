@@ -23,7 +23,7 @@ refs.form.addEventListener('submit', onFormSearch);
 
 const options = {
   root: null,
-  rootMargin: '50px',
+  rootMargin: '300px',
   threshold: 1.0,
 };
 
@@ -41,6 +41,7 @@ function onFormSearch(evt) {
       } else if (data.totalHits){
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
         createMarkup(data.hits);
+        // scrollTo(0, 0);
       } else if (!data.hits.length){
         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
           return;
@@ -56,9 +57,6 @@ function onFormSearch(evt) {
 
 let gallery = new SimpleLightbox('.photo-card a');
 
-// const refs = {
-//   container: document.querySelector('.gallery'),
-// };
 
 function createMarkup(arr) {
   const markup = arr
@@ -113,11 +111,10 @@ function onLoad(entries, observer) {
       fetchSearchPhoto(searchValue, page).then(data => {
         createMarkup(data.hits);
         observer.observe(refs.container.lastElementChild);
-
+        onScroll();
         if (refs.container.children.length > data.totalHits) {
           Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
-         observer.unobserve(refs.container.lastElementChild);
-         return
+          return observer.unobserve(refs.container.lastElementChild);
         }
       });
     }
@@ -146,24 +143,16 @@ window.onscroll = function () {
 
 
 
+function onScroll (){
+  const { height: cardHeight } = document
+  .querySelector(".gallery")
+  .firstElementChild.getBoundingClientRect();
 
-
-
-
-
-
-
-
-// function onScroll (){
-//   const { height: cardHeight } = document
-//   .querySelector(".gallery")
-//   .firstElementChild.getBoundingClientRect();
-
-// window.scrollBy({
-//   top: cardHeight * 2,
-//   behavior: "smooth",
-// });
-// }
+window.scrollBy({
+  top: cardHeight * 2,
+  behavior: "smooth",
+});
+}
 
 
 
