@@ -41,18 +41,18 @@ function onFormSearch(evt) {
       } else if (data.totalHits){
         Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
         createMarkup(data.hits);
-        // scrollTo(0, 0);
+        observer.observe(refs.container.lastElementChild);
       } else if (!data.hits.length){
         Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
           return;
         }
     })
     .catch(err => console.error(err.message))
-    .finally(() => {
-      // console.dir(refs.container.lastElementChild);
-      // console.log(refs.container.lastElementChild.getBoundingClientRect());
-      observer.observe(refs.container.lastElementChild);
-    });
+    // .finally(() => {
+    //   console.dir(refs.container.children.length);
+    //   // refs.container.lastElementChild.getBoundingClientRect();
+    //   observer.observe(refs.container.lastElementChild);
+    // });
 }
 
 let gallery = new SimpleLightbox('.photo-card a');
